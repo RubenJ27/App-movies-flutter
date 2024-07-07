@@ -24,7 +24,7 @@ class Movie {
   }
 
   get fullBackdropPath {
-    if (posterPath != null) {
+    if (backdropPath != null) {
       return 'https://image.tmdb.org/t/p/w500$backdropPath';
     }
     return 'https://via.placeholder.com/300x400';

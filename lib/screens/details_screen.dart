@@ -18,7 +18,7 @@ class DetailsScreen extends StatelessWidget {
               delegate: SliverChildListDelegate([
             _PosterAndTitle(movie: movie),
             _Overview(movie: movie),
-            CastingCards(movie: movie),
+            CastingCards(movie.id),
           ]))
         ],
       ),
@@ -47,7 +47,7 @@ class _CustomAppBar extends StatelessWidget {
           color: Colors.black12,
           child: Text(
             movie.title,
-            style: const TextStyle(fontSize: 16),
+            style: const TextStyle(fontSize: 16, color: Colors.white),
           ),
         ),
         background: FadeInImage(
