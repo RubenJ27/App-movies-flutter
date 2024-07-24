@@ -1,14 +1,14 @@
 import 'dart:async';
 
-import 'package:app_movies/models/movie.dart';
-import 'package:app_movies/models/now_playing_response.dart';
-import 'package:app_movies/models/popular_response.dart';
-import 'package:app_movies/models/search_response.dart';
+import 'package:app_movies/data/models/now_playing_response.dart';
+import 'package:app_movies/data/models/popular_movies_response.dart';
+import 'package:app_movies/data/models/search_response.dart';
+import 'package:app_movies/domain/entities/movie.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import '../helpers/debouncer.dart';
-import '../models/credits_response.dart';
+import '../../data/models/credits_response.dart';
+import '../../helpers/debouncer.dart';
 
 class MoviesProvider extends ChangeNotifier {
   final String _baseUrl = 'api.themoviedb.org';
@@ -59,7 +59,7 @@ class MoviesProvider extends ChangeNotifier {
   getPopularMovies() async {
     _popularPage++;
     final jsonData = await _getJsonData('3/movie/popular', _popularPage);
-    final popularResponse = PopularResponse.fromJson(jsonData);
+    final popularResponse = PopularMoviesResponse.fromJson(jsonData);
     popularMovies = [...popularMovies, ...popularResponse.results];
     notifyListeners();
   }

@@ -1,6 +1,7 @@
-import 'package:app_movies/models/models.dart';
-import 'package:app_movies/widgets/widgets.dart';
+import 'package:app_movies/ui/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+
+import '../../../domain/entities/movie.dart';
 
 class DetailsScreen extends StatelessWidget {
   const DetailsScreen({super.key});

@@ -1,6 +1,7 @@
-import 'package:app_movies/models/models.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
+
+import '../../domain/entities/movie.dart';
 
 class CardSwiper extends StatelessWidget {
   const CardSwiper({super.key, required this.movies});

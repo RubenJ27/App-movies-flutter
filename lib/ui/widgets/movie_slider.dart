@@ -1,5 +1,6 @@
-import 'package:app_movies/models/models.dart';
 import 'package:flutter/material.dart';
+
+import '../../domain/entities/movie.dart';
 
 class MovieSlider extends StatefulWidget {
   final String? title;

@@ -1,8 +1,8 @@
-import 'package:app_movies/providers/movies_provider.dart';
+import 'package:app_movies/ui/providers/movies_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'screens/screens.dart';
+import 'ui/pages/screens.dart';
 
 void main() => runApp(const AppState());
 

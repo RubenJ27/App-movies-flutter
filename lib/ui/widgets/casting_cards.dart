@@ -1,7 +1,7 @@
-import 'package:app_movies/models/models.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
+import '../../data/models/credits_response.dart';
 import '../providers/movies_provider.dart';
 
 class CastingCards extends StatelessWidget {
