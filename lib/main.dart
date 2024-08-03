@@ -1,23 +1,19 @@
-import 'package:app_movies/ui/providers/movies_provider.dart';
+import 'package:app_movies/data/data_services/api_data_service.dart';
+import 'package:app_movies/domain/blocs/movies_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'data/repositories_impl/movie_repository_impl.dart';
 import 'ui/pages/screens.dart';
-
-void main() => runApp(const AppState());
 
 class AppState extends StatelessWidget {
   const AppState({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (_) => MoviesProvider(),
-          lazy: false,
-        )
-      ],
+    return BlocProvider(
+      create: (BuildContext context) =>
+          MoviesBloc(MovieRepositoryImpl(ApiDataService())),
       child: const MyApp(),
     );
   }
@@ -34,7 +30,7 @@ class MyApp extends StatelessWidget {
       initialRoute: 'home',
       routes: {
         'home': (_) => const HomeScreen(),
-        'details': (_) => DetailsScreen()
+        'details': (_) => const DetailsScreen()
       },
       theme: ThemeData.light().copyWith(
         appBarTheme: const AppBarTheme(color: Colors.blue),
@@ -42,3 +38,5 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+void main() => runApp(const AppState());

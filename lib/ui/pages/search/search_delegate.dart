@@ -1,15 +1,15 @@
-import 'package:app_movies/ui/providers/movies_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../domain/blocs/movies_bloc.dart';
 import '../../../domain/entities/movie.dart';
 
 class MovieSearchDelegate extends SearchDelegate {
   @override
   String? get searchFieldLabel => 'Buscar pelicula';
+
   @override
   List<Widget>? buildActions(BuildContext context) {
-    // TODO: implement buildActions
     return [
       IconButton(onPressed: () => query = '', icon: const Icon(Icons.clear))
     ];
@@ -17,7 +17,6 @@ class MovieSearchDelegate extends SearchDelegate {
 
   @override
   Widget? buildLeading(BuildContext context) {
-    // TODO: implement buildLeading
     return IconButton(
         onPressed: () => {close(context, null)},
         icon: const Icon(Icons.arrow_back));
@@ -25,7 +24,6 @@ class MovieSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    // TODO: implement buildResults
     return const Text('buildResults');
   }
 
@@ -39,31 +37,42 @@ class MovieSearchDelegate extends SearchDelegate {
     );
   }
 
+  Widget _noResultsContainer() {
+    return const Center(
+      child: Text(
+        'No se encontraron resultados',
+        style: TextStyle(fontSize: 20, color: Colors.black38),
+      ),
+    );
+  }
+
   @override
   Widget buildSuggestions(BuildContext context) {
-    // TODO: implement buildSuggestions
     if (query.isEmpty) {
       return _emptyContainer();
     }
 
-    final moviesProvider = Provider.of<MoviesProvider>(context, listen: false);
-    moviesProvider.getSuggestionsByQuery(query);
+    final MoviesBloc moviesBloc = BlocProvider.of<MoviesBloc>(context);
+    moviesBloc.add(GetSuggestionsByQuery(query)); // Agregar evento al BLoC
 
-    return StreamBuilder<Object>(
-        stream: moviesProvider.suggestionStream,
-        builder: (context, snapshot) {
-          return FutureBuilder(
-            future: moviesProvider.searchMovies(query),
-            builder: (_, AsyncSnapshot<List<Movie>> snapshot) {
-              if (!snapshot.hasData) return _emptyContainer();
-              final movies = snapshot.data!;
-              return ListView.builder(
-                itemCount: movies.length,
-                itemBuilder: (context, index) => _MovieItem(movies[index]),
-              );
-            },
+    return StreamBuilder<List<Movie>>(
+      stream: moviesBloc.suggestionStream,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return _noResultsContainer();
+        } else {
+          final movies = snapshot.data!;
+          return ListView.builder(
+            itemCount: movies.length,
+            itemBuilder: (context, index) => _MovieItem(movies[index]),
           );
-        });
+        }
+      },
+    );
   }
 }
 
