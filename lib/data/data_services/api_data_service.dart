@@ -1,13 +1,13 @@
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 
-import '../../config/api_config.dart';
+import '../../core/config/api_config.dart';
 
 class ApiDataService {
-  final String _baseUrl = ApiConfig.baseUrl;
   final String _apiKey = ApiConfig.apiKey;
   final String _language = ApiConfig.language;
+  final Dio _dio = Dio();
 
-  Future<String> getJsonData(String endpoint,
+  Future<dynamic> getJsonData(String endpoint,
       {int page = 1, Map<String, String>? additionalParams}) async {
     final params = {
       'api_key': _apiKey,
@@ -19,12 +19,17 @@ class ApiDataService {
       params.addAll(additionalParams);
     }
 
-    final url = Uri.https(_baseUrl, endpoint, params);
+    final url = 'https://${ApiConfig.baseUrl}/3$endpoint';
 
-    final response = await http.get(url);
-    if (response.statusCode != 200) {
-      throw Exception('Failed to load data');
+    try {
+      final Response<dynamic> response =
+          await _dio.get(url, queryParameters: params);
+      if (response.statusCode != 200) {
+        throw Exception('Failed to load data');
+      }
+      return response.data; // Return the JSON object directly
+    } catch (e) {
+      throw Exception(e.toString());
     }
-    return response.body;
   }
 }

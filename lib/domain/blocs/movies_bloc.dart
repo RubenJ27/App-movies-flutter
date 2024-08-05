@@ -37,7 +37,7 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
       onDisplayMovies = displayMovies;
       emit(MoviesDisplayLoaded(displayMovies));
     } catch (e) {
-      emit(MoviesError('Error fetching on display movies: ${e.toString()}'));
+      emit(MoviesError(e.toString()));
     }
   }
 
@@ -53,8 +53,7 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
       _popularMovies.addAll(popularMovies);
       emit(PopularMoviesLoaded(_popularMovies));
     } catch (e) {
-      emit(
-          PopularMoviesError('Error fetching popular movies: ${e.toString()}'));
+      emit(PopularMoviesError(e.toString()));
     }
   }
 

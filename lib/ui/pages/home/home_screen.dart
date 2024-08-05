@@ -35,7 +35,7 @@ class HomeScreen extends StatelessWidget {
               listener: (context, state) {
                 if (state is MoviesError) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Error: ${state.message}')),
+                    SnackBar(content: Text('Error Movies: ${state.message}')),
                   );
                 }
               },
