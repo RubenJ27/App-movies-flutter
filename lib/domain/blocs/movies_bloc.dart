@@ -20,7 +20,7 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
   int _popularMoviesPage = 0;
   final Map<int, List<Cast>> onMoviesCast = {};
 
-  MoviesBloc(this.movieRepository) : super(MoviesInitial()) {
+  MoviesBloc(this.movieRepository) : super(const MoviesInitial()) {
     on<GetOnDisplayMovies>(_onGetOnDisplayMovies);
     on<GetPopularMovies>(_onGetPopularMovies);
     on<GetMovieCast>(_onGetMovieCast);
@@ -30,22 +30,23 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
 
   void _onGetOnDisplayMovies(
       GetOnDisplayMovies event, Emitter<MoviesState> emit) async {
-    emit(MoviesLoading());
+    emit(const DisplayMoviesLoading());
     try {
       final List<Movie> displayMovies =
           await movieRepository.getOnDisplayMovies();
       onDisplayMovies = displayMovies;
       emit(MoviesDisplayLoaded(displayMovies));
     } catch (e) {
-      emit(MoviesError(e.toString()));
+      emit(DisplayMoviesError(
+        message: e.toString(),
+      )); // Aquí se pasa el argumento 'message'
     }
   }
 
   void _onGetPopularMovies(
       GetPopularMovies event, Emitter<MoviesState> emit) async {
     // Emitir estado de carga parcial sin reiniciar la lista de películas
-    emit(PopularMoviesLoading());
-
+    emit(const PopularMoviesLoading());
     try {
       _popularMoviesPage++;
       final popularMovies =
@@ -53,7 +54,9 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
       _popularMovies.addAll(popularMovies);
       emit(PopularMoviesLoaded(_popularMovies));
     } catch (e) {
-      emit(PopularMoviesError(e.toString()));
+      emit(PopularMoviesError(
+        message: e.toString(),
+      ));
     }
   }
 
@@ -64,10 +67,12 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
   }
 
   void _onGetMovieCast(GetMovieCast event, Emitter<MoviesState> emit) async {
-    emit(MoviesLoading());
+    emit(const MovieCastLoading());
     try {
       if (onMoviesCast.containsKey(event.movieId)) {
-        emit(MovieCastLoaded(onMoviesCast[event.movieId]!));
+        emit(MovieCastLoaded(
+          onMoviesCast[event.movieId]!,
+        ));
       } else {
         final List<Cast> movieCast =
             await movieRepository.getOnMovieCast(event.movieId);
@@ -75,22 +80,28 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
         emit(MovieCastLoaded(movieCast));
       }
     } catch (e) {
-      emit(MovieCastError(e.toString()));
+      emit(MovieCastError(
+        e.toString(), // Argumento posicional
+        errorMessage:
+            'Error al cargar el reparto de la película', // Argumento nombrado
+      ));
     }
   }
 
   void _onSearchMovies(GetSearchMovies event, Emitter<MoviesState> emit) async {
-    emit(SearchMoviesLoading());
+    emit(const SearchMoviesLoading());
     try {
       final movies = await movieRepository.getOnSearchMovies(event.query);
 
       if (movies.isEmpty) {
-        emit(const MoviesError('No movies found.'));
+        emit(const SearchMoviesError(
+          message: 'Error al cargar la busqueda de la película',
+        ));
       } else {
         emit(SearchMoviesLoaded(movies: movies));
       }
     } catch (e) {
-      emit(MoviesError(e.toString()));
+      emit(SearchMoviesError(message: e.toString()));
     }
   }
 

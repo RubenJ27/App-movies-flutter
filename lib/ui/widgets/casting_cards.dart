@@ -16,7 +16,7 @@ class CastingCards extends StatelessWidget {
 
     return BlocBuilder<MoviesBloc, MoviesState>(
       builder: (_, state) {
-        if (state is MoviesLoading) {
+        if (state is MovieCastLoading) {
           return Container(
             constraints: const BoxConstraints(maxWidth: 150),
             height: 180,
@@ -34,7 +34,7 @@ class CastingCards extends StatelessWidget {
               itemBuilder: (_, int index) => _CastCard(cast[index]),
             ),
           );
-        } else if (state is MoviesError) {
+        } else if (state is MovieCastError) {
           return Center(child: Text(state.message));
         } else {
           return Container();

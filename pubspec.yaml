@@ -31,23 +31,25 @@ dependencies:
   card_swiper: ^3.0.1
   cupertino_icons: ^1.0.6
   en_card_swiper: ^0.0.1
-  equatable: ^2.0.5
-  flutter_bloc: ^8.1.6
-  bloc: ^8.1.4
+  equatable: ^2.0.5 # Instalar para pruebas de bloc (opcional)
+  flutter_bloc: ^8.1.6 # Instalar para pruebas de bloc
+  bloc: ^8.1.4 # Instalar para pruebas de bloc
   go_router: ^14.2.1
   flutter:
     sdk: flutter
   flutter_card_swiper: ^7.0.0
   http: ^1.2.1
   provider: ^6.1.2
-  mockito: ^5.4.4
-  bloc_test: ^9.1.7
-  dio: ^5.5.0+1
-  logger: ^2.4.0
+  mockito: ^5.4.4 # Instalar para pruebas de bloc
+  bloc_test: ^9.1.7 # Instalar para pruebas de bloc
+  dio: ^5.5.0+1 # Instalar para pruebas de bloc
+  logger: ^2.4.0 # Instalar para pruebas de bloc
+  remove_from_coverage: ^2.0.0 # Instalar para pruebas de bloc
 
 dev_dependencies:
+  build_runner: ^2.4.11 # Instalar para pruebas de bloc
   flutter_lints: ^3.0.0
-  flutter_test:
+  flutter_test: # Instalar para pruebas de bloc
     sdk: flutter
 
 # For information on the generic Dart part of this file, see the

@@ -2,14 +2,17 @@ part of 'movies_bloc.dart';
 
 abstract class MoviesEvent extends Equatable {
   const MoviesEvent();
+}
 
+class GetOnDisplayMovies extends MoviesEvent {
   @override
   List<Object> get props => [];
 }
 
-class GetOnDisplayMovies extends MoviesEvent {}
-
-class GetPopularMovies extends MoviesEvent {}
+class GetPopularMovies extends MoviesEvent {
+  @override
+  List<Object> get props => [];
+}
 
 class GetMovieCast extends MoviesEvent {
   final int movieId;
@@ -38,5 +41,3 @@ class GetSuggestionsByQuery extends MoviesEvent {
   @override
   List<Object> get props => [searchTerm];
 }
-
-class LoadMoviesEvent extends MoviesEvent {}

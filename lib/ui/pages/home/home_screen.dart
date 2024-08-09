@@ -33,20 +33,24 @@ class HomeScreen extends StatelessWidget {
           children: [
             BlocListener<MoviesBloc, MoviesState>(
               listener: (context, state) {
-                if (state is MoviesError) {
+                if (state is DisplayMoviesError) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Error Movies: ${state.message}')),
+                    SnackBar(
+                        content: Text('Error Movies: ${state.errorMessage}')),
                   );
                 }
               },
               child: Column(
                 children: [
                   BlocBuilder<MoviesBloc, MoviesState>(
-                    buildWhen: (previous, current) =>
-                        current is MoviesDisplayLoaded ||
-                        current is MoviesError,
+                    buildWhen: (previous, current) {
+                      // Solo reconstruir si el estado actual es diferente del anterior
+                      return previous != current &&
+                          (current is MoviesDisplayLoaded ||
+                              current is DisplayMoviesError);
+                    },
                     builder: (context, state) {
-                      if (state is MoviesLoading) {
+                      if (state is DisplayMoviesLoading) {
                         return SizedBox(
                           height: MediaQuery.of(context).size.height *
                               0.4, // 40% de la altura de la pantalla
@@ -55,9 +59,18 @@ class HomeScreen extends StatelessWidget {
                           ),
                         );
                       } else if (state is MoviesDisplayLoaded) {
-                        return CardSwiper(movies: state.movies);
-                      } else if (state is MoviesError) {
-                        return Center(child: Text('Error: ${state.message}'));
+                        // Verifica que state.movies no sea nulo
+                        if (state.movies != null) {
+                          return CardSwiper(movies: state.movies!);
+                        } else {
+                          return const Center(
+                            child: Text('No movies available'),
+                          );
+                        }
+                      } else if (state is DisplayMoviesError) {
+                        return Center(
+                          child: Text('Error: ${state.errorMessage}'),
+                        );
                       } else {
                         return const SizedBox.shrink();
                       }
@@ -77,7 +90,8 @@ class HomeScreen extends StatelessWidget {
                               .add(GetPopularMovies()),
                         );
                       } else if (state is PopularMoviesError) {
-                        return Center(child: Text('Error: ${state.message}'));
+                        return Center(
+                            child: Text('Error: ${state.errorMessage}'));
                       } else {
                         return const SizedBox.shrink();
                       }
