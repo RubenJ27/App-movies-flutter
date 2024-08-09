@@ -136,10 +136,13 @@ class _Overview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String overview = movie.overview.isNotEmpty
+        ? movie.overview
+        : 'No hay resumen disponible para esta película.'; // Debug print statement
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
       child: Text(
-        movie.overview,
+        overview,
         textAlign: TextAlign.justify,
         style: Theme.of(context).textTheme.titleMedium,
       ),

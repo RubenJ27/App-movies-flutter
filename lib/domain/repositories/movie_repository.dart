@@ -55,8 +55,9 @@ abstract class MovieRepository extends BaseRepository {
 
   Future<List<Movie>> getOnSearchMovies(String query) async {
     try {
-      final jsonData = await _apiDataService
-          .getJsonData('search/movie', additionalParams: {'query': query});
+      final jsonData = await _apiDataService.getJsonData(
+          'search/movie&language=es-ES',
+          additionalParams: {'query': query});
       // Verificar si jsonData es un mapa y convertirlo a cadena JSON si es necesario
       final String jsonString = convertToJsonString(jsonData);
       final searchMoviesResponse = SearchResponse.fromJson(jsonString);
