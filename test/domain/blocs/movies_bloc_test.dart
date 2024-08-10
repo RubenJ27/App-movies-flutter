@@ -8,8 +8,8 @@ import 'package:mockito/mockito.dart';
 
 import '../../mocks/movies_bloc_test.mocks.dart';
 
-// Al realizar pruebas, no utilice constpalabras clave, ese suele ser el problema.
-
+// La anotación @GenerateMocks se utiliza para generar clases mock para las clases
+// especificadas.
 @GenerateMocks([MovieRepository])
 void main() {
   // Grupo de pruebas para verificar que el estado inicial de MoviesState es correcto
@@ -27,18 +27,19 @@ void main() {
     late MoviesBloc moviesBloc;
     late MockMovieRepository mockMovieRepository;
 
+    // Arrange: Configuración inicial de la prueba
     setUp(() {
       mockMovieRepository = MockMovieRepository();
       moviesBloc = MoviesBloc(mockMovieRepository);
     });
 
-    // Esta prueba verifica que el MoviesBloc emite los estados DisplayMoviesLoading y MoviesDisplayLoaded
+    // Esta prueba verifica que el MoviesBloc emite los estados DisplayMoviesLoading
+    //y MoviesDisplayLoaded
     // en secuencia cuando se agrega el evento GetOnDisplayMovies, simulando un caso de éxito.
     blocTest<MoviesBloc, MoviesState>(
       'emits [DisplayMoviesLoading, MoviesDisplayLoaded] cuando se agrega GetOnDisplayMovies (caso de exito)',
       // build: Crea y devuelve una instancia del Bloc que se va a probar
       build: () {
-        // Arrange: Configuración inicial de la prueba
         print('Setting up mock repository');
         // Stubbing: Definición de la respuesta del método simulado
         when(mockMovieRepository.getOnDisplayMovies()).thenAnswer((_) async => [
@@ -134,52 +135,49 @@ void main() {
   });
 
   // Grupo de pruebas para MoviesState
-  group(
-    'MoviesState test',
-    () {
-      // Esta prueba verifica que el estado inicial MoviesInitial inicializa correctamente
-      // las propiedades movies, message, errorMessage e isLoadingDisplayMovies.
-      test('MoviesInitial debería tener las propiedades correctas', () {
-        // ignore: prefer_const_constructors
-        final state = MoviesInitial();
-        expect(state.movies, []);
-        expect(state.errorMessage, isNull);
-        expect(state.isLoadingDisplayMovies, isFalse);
-      });
+  group('MoviesState test', () {
+    // Esta prueba verifica que el estado inicial MoviesInitial inicializa correctamente
+    // las propiedades movies, message, errorMessage e isLoadingDisplayMovies.
+    test('MoviesInitial debería tener las propiedades correctas', () {
+      // ignore: prefer_const_constructors
+      final state = MoviesInitial();
+      expect(state.movies, []);
+      expect(state.errorMessage, isNull);
+      expect(state.isLoadingDisplayMovies, isFalse);
+    });
 
-      /*
+    /*
       Esta prueba asegura que el estado MoviesState inicializa todas sus propiedades
       correctamente y que estas propiedades están incluidas en la lista props.
       */
-      test(
-        'Las propiedades de MoviesState deberían incluir todas las propiedades',
-        () {
-          const state = MoviesState(
-            movies: [],
-            isLoadingDisplayMovies: false,
-            errorMessage: '',
-          );
-          expect(state.props, [
-            state.movies,
-            state.isLoadingDisplayMovies,
-            state.errorMessage,
-          ]);
-        },
-      );
+    test(
+      'Las propiedades de MoviesState deberían incluir todas las propiedades',
+      () {
+        const state = MoviesState(
+          movies: [],
+          isLoadingDisplayMovies: false,
+          errorMessage: '',
+        );
+        expect(state.props, [
+          state.movies,
+          state.isLoadingDisplayMovies,
+          state.errorMessage,
+        ]);
+      },
+    );
 
-      /*
+    /*
       Esta prueba asegura que el estado DisplayMoviesLoading inicializa todas sus propiedades
       correctamente, incluyendo movies, isLoadingDisplayMovies, errorMessage y message.
       */
-      test('DisplayMoviesLoading debería tener las propiedades correctas', () {
-        // ignore: prefer_const_constructors
-        final state = DisplayMoviesLoading();
-        expect(state.movies, []);
-        expect(state.isLoadingDisplayMovies, true);
-        expect(state.errorMessage, isNull);
-      });
-    },
-  );
+    test('DisplayMoviesLoading debería tener las propiedades correctas', () {
+      // ignore: prefer_const_constructors
+      final state = DisplayMoviesLoading();
+      expect(state.movies, []);
+      expect(state.isLoadingDisplayMovies, true);
+      expect(state.errorMessage, isNull);
+    });
+  });
 
   // Grupo de pruebas para MoviesEvent
   group('MoviesEvent test', () {
@@ -235,3 +233,6 @@ void main() {
     });
   });
 }
+
+
+// Al realizar pruebas, no utilice constpalabras clave, ese suele ser el problema.

@@ -79,10 +79,10 @@ class MoviesDisplayLoaded extends MoviesState {
 }
 
 class DisplayMoviesError extends MoviesState {
-  final String _message;
+  final String _errorMessage;
 
   const DisplayMoviesError({required String message})
-      : _message = message,
+      : _errorMessage = message,
         super(
           movies: const [],
           isLoadingDisplayMovies: false,
@@ -90,7 +90,7 @@ class DisplayMoviesError extends MoviesState {
         );
 
   @override
-  String get errorMessage => _message;
+  String get errorMessage => _errorMessage;
 }
 
 class PopularMoviesLoading extends MoviesState {
@@ -113,10 +113,10 @@ class PopularMoviesLoaded extends MoviesState {
 }
 
 class PopularMoviesError extends MoviesState {
-  final String _message;
+  final String _errorMessage;
 
   const PopularMoviesError({required String message})
-      : _message = message,
+      : _errorMessage = message,
         super(
           movies: const [],
           isLoadingDisplayMovies: false,
@@ -124,10 +124,10 @@ class PopularMoviesError extends MoviesState {
         );
 
   @override
-  String get errorMessage => _message;
+  String get errorMessage => _errorMessage;
 
   @override
-  List<Object?> get props => [_message, errorMessage];
+  List<Object?> get props => [errorMessage];
 }
 
 class MovieCastLoading extends MoviesState {
@@ -152,17 +152,21 @@ class MovieCastLoaded extends MoviesState {
 }
 
 class MovieCastError extends MoviesState {
-  final String message;
+  final String _errorMessage;
 
-  MovieCastError(this.message, {required String errorMessage})
-      : super(
+  MovieCastError({required String message})
+      : _errorMessage = message,
+        super(
           movies: [],
           isLoadingDisplayMovies: false,
-          errorMessage: errorMessage,
+          errorMessage: message,
         );
 
   @override
-  List<Object?> get props => [message, errorMessage];
+  String get errorMessage => _errorMessage;
+
+  @override
+  List<Object?> get props => [errorMessage];
 }
 
 class SearchMoviesLoading extends MoviesState {
@@ -182,11 +186,11 @@ class SearchMoviesLoaded extends MoviesState {
 }
 
 class SearchMoviesError extends MoviesState {
-  final String _message;
+  final String _errorMessage;
 
   const SearchMoviesError({
     required String message,
-  })  : _message = message,
+  })  : _errorMessage = message,
         super(
           movies: const [],
           isLoadingDisplayMovies: false,
@@ -194,10 +198,10 @@ class SearchMoviesError extends MoviesState {
         );
 
   @override
-  String get errorMessage => _message;
+  String get errorMessage => _errorMessage;
 
   @override
-  List<Object?> get props => [_message, errorMessage];
+  List<Object?> get props => [errorMessage];
 }
 
 class MovieSuggestionsLoading extends MoviesState {
@@ -216,4 +220,22 @@ class MovieSuggestionsLoaded extends MoviesState {
 
   @override
   List<Object> get props => [suggestions];
+}
+
+class SuggestionsError extends MoviesState {
+  final String _errorMessage;
+
+  SuggestionsError({required String message})
+      : _errorMessage = message,
+        super(
+          movies: [],
+          isLoadingDisplayMovies: false,
+          errorMessage: message,
+        );
+
+  @override
+  String get errorMessage => _errorMessage;
+
+  @override
+  List<Object?> get props => [errorMessage];
 }

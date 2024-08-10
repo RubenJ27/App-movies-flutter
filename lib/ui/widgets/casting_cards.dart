@@ -35,7 +35,7 @@ class CastingCards extends StatelessWidget {
             ),
           );
         } else if (state is MovieCastError) {
-          return Center(child: Text(state.message));
+          return Center(child: Text(state.errorMessage));
         } else {
           return Container();
         }

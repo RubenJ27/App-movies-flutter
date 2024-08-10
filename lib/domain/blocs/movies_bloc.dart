@@ -12,7 +12,7 @@ part 'movies_event.dart';
 part 'movies_state.dart';
 
 class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
-  final MovieRepository movieRepository;
+  final MovieRepository _movieRepository;
 
   List<Movie> onDisplayMovies = [];
   final List<Movie> popularMovies = [];
@@ -20,7 +20,7 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
   int _popularMoviesPage = 0;
   final Map<int, List<Cast>> onMoviesCast = {};
 
-  MoviesBloc(this.movieRepository) : super(const MoviesInitial()) {
+  MoviesBloc(this._movieRepository) : super(const MoviesInitial()) {
     on<GetOnDisplayMovies>(_onGetOnDisplayMovies);
     on<GetPopularMovies>(_onGetPopularMovies);
     on<GetMovieCast>(_onGetMovieCast);
@@ -33,7 +33,7 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
     emit(const DisplayMoviesLoading());
     try {
       final List<Movie> displayMovies =
-          await movieRepository.getOnDisplayMovies();
+          await _movieRepository.getOnDisplayMovies();
       onDisplayMovies = displayMovies;
       emit(MoviesDisplayLoaded(displayMovies));
     } catch (e) {
@@ -50,7 +50,7 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
     try {
       _popularMoviesPage++;
       final popularMovies =
-          await movieRepository.getOnPopularMovies(_popularMoviesPage);
+          await _movieRepository.getOnPopularMovies(_popularMoviesPage);
       _popularMovies.addAll(popularMovies);
       emit(PopularMoviesLoaded(_popularMovies));
     } catch (e) {
@@ -75,15 +75,13 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
         ));
       } else {
         final List<Cast> movieCast =
-            await movieRepository.getOnMovieCast(event.movieId);
+            await _movieRepository.getOnMovieCast(event.movieId);
         onMoviesCast[event.movieId] = movieCast;
         emit(MovieCastLoaded(movieCast));
       }
     } catch (e) {
       emit(MovieCastError(
-        e.toString(), // Argumento posicional
-        errorMessage:
-            'Error al cargar el reparto de la película', // Argumento nombrado
+        message: e.toString(),
       ));
     }
   }
@@ -91,7 +89,7 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
   void _onSearchMovies(GetSearchMovies event, Emitter<MoviesState> emit) async {
     emit(const SearchMoviesLoading());
     try {
-      final movies = await movieRepository.getOnSearchMovies(event.query);
+      final movies = await _movieRepository.getOnSearchMovies(event.query);
 
       if (movies.isEmpty) {
         emit(const SearchMoviesError(
@@ -120,11 +118,14 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
     debouncer.value = '';
     debouncer.onValue = (value) async {
       try {
-        final results = await movieRepository.getOnSearchMovies(value);
+        final results = await _movieRepository.getOnSearchMovies(value);
         _suggestionStreamController.add(results);
       } catch (e) {
         // Manejar el error adecuadamente
         print('Error al obtener sugerencias: $e');
+
+        // Emitir un estado de error para que la UI pueda reaccionar
+        emit(SuggestionsError(message: 'Error al obtener sugerencias'));
       }
     };
 
