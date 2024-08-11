@@ -1,16 +1,11 @@
 import 'package:app_movies/domain/blocs/movies_bloc.dart';
 import 'package:app_movies/domain/entities/movie.dart';
-import 'package:app_movies/domain/repositories/movie_repository.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import '../../mocks/movies_bloc_test.mocks.dart';
+import '../../mocks/service_mocks.mocks.dart';
 
-// La anotación @GenerateMocks se utiliza para generar clases mock para las clases
-// especificadas.
-@GenerateMocks([MovieRepository])
 void main() {
   // Grupo de pruebas para verificar que el estado inicial de MoviesState es correcto
   group('MoviesState initialState', () {
