@@ -69,8 +69,8 @@ class DisplayMoviesLoading extends MoviesState {
         );
 }
 
-class MoviesDisplayLoaded extends MoviesState {
-  const MoviesDisplayLoaded(List<Movie> movies)
+class DisplayMoviesLoaded extends MoviesState {
+  const DisplayMoviesLoaded(List<Movie> movies)
       : super(
           movies: movies,
           isLoadingDisplayMovies: false,

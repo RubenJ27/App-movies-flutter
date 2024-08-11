@@ -46,7 +46,7 @@ class HomeScreen extends StatelessWidget {
                     buildWhen: (previous, current) {
                       // Solo reconstruir si el estado actual es diferente del anterior
                       return previous != current &&
-                          (current is MoviesDisplayLoaded ||
+                          (current is DisplayMoviesLoaded ||
                               current is DisplayMoviesError);
                     },
                     builder: (context, state) {
@@ -58,7 +58,7 @@ class HomeScreen extends StatelessWidget {
                             child: CircularProgressIndicator(),
                           ),
                         );
-                      } else if (state is MoviesDisplayLoaded) {
+                      } else if (state is DisplayMoviesLoaded) {
                         // Verifica que state.movies no sea nulo
                         if (state.movies != null) {
                           return CardSwiper(movies: state.movies!);

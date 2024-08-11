@@ -29,10 +29,10 @@ void main() {
     });
 
     // Esta prueba verifica que el MoviesBloc emite los estados DisplayMoviesLoading
-    //y MoviesDisplayLoaded
+    //y DisplayMoviesLoaded
     // en secuencia cuando se agrega el evento GetOnDisplayMovies, simulando un caso de éxito.
     blocTest<MoviesBloc, MoviesState>(
-      'emits [DisplayMoviesLoading, MoviesDisplayLoaded] cuando se agrega GetOnDisplayMovies (caso de exito)',
+      'emits [DisplayMoviesLoading, DisplayMoviesLoaded] cuando se agrega GetOnDisplayMovies (caso de exito)',
       // build: Crea y devuelve una instancia del Bloc que se va a probar
       build: () {
         print('Setting up mock repository');
@@ -65,7 +65,7 @@ void main() {
           'isLoadingDisplayMovies',
           true,
         ),
-        isA<MoviesDisplayLoaded>()
+        isA<DisplayMoviesLoaded>()
             .having(
               (state) => state.movies,
               'movies',

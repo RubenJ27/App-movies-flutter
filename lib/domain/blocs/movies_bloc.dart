@@ -35,7 +35,7 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
       final List<Movie> displayMovies =
           await _movieRepository.getOnDisplayMovies();
       onDisplayMovies = displayMovies;
-      emit(MoviesDisplayLoaded(displayMovies));
+      emit(DisplayMoviesLoaded(displayMovies));
     } catch (e) {
       emit(DisplayMoviesError(
         message: e.toString(),
