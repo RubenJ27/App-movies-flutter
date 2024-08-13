@@ -49,16 +49,6 @@ class MoviesState extends Equatable {
       ];
 }
 
-class MoviesInitial extends MoviesState {
-  const MoviesInitial()
-      : super(
-          // coverage:ignore-line
-          movies: const [],
-          errorMessage: null,
-          isLoadingDisplayMovies: false,
-        );
-}
-
 class DisplayMoviesLoading extends MoviesState {
   const DisplayMoviesLoading()
       // coverage:ignore-line

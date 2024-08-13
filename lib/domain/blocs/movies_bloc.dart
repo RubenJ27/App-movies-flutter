@@ -20,7 +20,7 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
   int _popularMoviesPage = 0;
   final Map<int, List<Cast>> onMoviesCast = {};
 
-  MoviesBloc(this._movieRepository) : super(const MoviesInitial()) {
+  MoviesBloc(this._movieRepository) : super(MoviesState.initialState()) {
     on<GetOnDisplayMovies>(_onGetOnDisplayMovies);
     on<GetPopularMovies>(_onGetPopularMovies);
     on<GetMovieCast>(_onGetMovieCast);

@@ -7,16 +7,48 @@ import 'package:mockito/mockito.dart';
 import '../../mocks/service_mocks.mocks.dart';
 
 void main() {
-  // Grupo de pruebas para verificar que el estado inicial de MoviesState es correcto
-  group('MoviesState initialState', () {
+// Grupo de pruebas para verificar la inicialización de MoviesState y sus subestados
+  group('MoviesState Initialization Tests', () {
+    // Esta prueba verifica que el método initialState retorna los valores iniciales correctos
     test('initialState returns correct initial values', () {
       final initialState = MoviesState.initialState();
       expect(initialState.movies, []);
       expect(initialState.isLoadingDisplayMovies, false);
       expect(initialState.errorMessage, '');
     });
+
+    // Esta prueba asegura que el estado DisplayMoviesLoading inicializa todas sus propiedades
+    // correctamente, incluyendo movies, isLoadingDisplayMovies, errorMessage y message.
+    test('DisplayMoviesLoading debería tener las propiedades correctas', () {
+      // ignore: prefer_const_constructors
+      final state = DisplayMoviesLoading();
+      expect(state.movies, []);
+      expect(state.isLoadingDisplayMovies, true);
+      expect(state.errorMessage, isNull);
+    });
   });
 
+// Grupo de pruebas para verificar las propiedades de MoviesState
+  group('MoviesState Property Tests', () {
+    /*
+    Esta prueba asegura que el estado MoviesState inicializa todas sus propiedades
+    correctamente y que estas propiedades están incluidas en la lista props.
+    */
+    test(
+        'Las propiedades de MoviesState deberían incluir todas las propiedades',
+        () {
+      const state = MoviesState(
+        movies: [],
+        isLoadingDisplayMovies: false,
+        errorMessage: '',
+      );
+      expect(state.props, [
+        state.movies,
+        state.isLoadingDisplayMovies,
+        state.errorMessage,
+      ]);
+    });
+  });
   // Grupo de pruebas para MoviesBloc
   group('MoviesBloc test', () {
     late MoviesBloc moviesBloc;
@@ -127,59 +159,6 @@ void main() {
       },
     );
     //
-  });
-
-  // Grupo de pruebas para MoviesState
-  group('MoviesState test', () {
-    // Esta prueba verifica que el estado inicial MoviesInitial inicializa correctamente
-    // las propiedades movies, message, errorMessage e isLoadingDisplayMovies.
-    test('MoviesInitial debería tener las propiedades correctas', () {
-      // ignore: prefer_const_constructors
-      final state = MoviesInitial();
-      expect(state.movies, []);
-      expect(state.errorMessage, isNull);
-      expect(state.isLoadingDisplayMovies, isFalse);
-    });
-
-    /*
-      Esta prueba asegura que el estado MoviesState inicializa todas sus propiedades
-      correctamente y que estas propiedades están incluidas en la lista props.
-      */
-    test(
-      'Las propiedades de MoviesState deberían incluir todas las propiedades',
-      () {
-        const state = MoviesState(
-          movies: [],
-          isLoadingDisplayMovies: false,
-          errorMessage: '',
-        );
-        expect(state.props, [
-          state.movies,
-          state.isLoadingDisplayMovies,
-          state.errorMessage,
-        ]);
-      },
-    );
-
-    /*
-      Esta prueba asegura que el estado DisplayMoviesLoading inicializa todas sus propiedades
-      correctamente, incluyendo movies, isLoadingDisplayMovies, errorMessage y message.
-      */
-    test('DisplayMoviesLoading debería tener las propiedades correctas', () {
-      // ignore: prefer_const_constructors
-      final state = DisplayMoviesLoading();
-      expect(state.movies, []);
-      expect(state.isLoadingDisplayMovies, true);
-      expect(state.errorMessage, isNull);
-    });
-  });
-
-  // Grupo de pruebas para MoviesEvent
-  group('MoviesEvent test', () {
-    test('props are correct for GetOnDisplayMovies', () {
-      final event = GetOnDisplayMovies();
-      expect(event.props, []);
-    });
   });
 
   // Grupo de pruebas para el método copyWith de MoviesState

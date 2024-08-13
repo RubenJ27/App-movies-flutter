@@ -1,29 +1,19 @@
 part of 'movies_bloc.dart';
 
-abstract class MoviesEvent extends Equatable {
+abstract class MoviesEvent {
   const MoviesEvent();
-
-  @override
-  List<Object> get props => [];
 }
 
 class GetOnDisplayMovies extends MoviesEvent {
-  @override
-  List<Object> get props => [];
+  const GetOnDisplayMovies();
 }
 
-class GetPopularMovies extends MoviesEvent {
-  @override
-  List<Object> get props => [];
-}
+class GetPopularMovies extends MoviesEvent {}
 
 class GetMovieCast extends MoviesEvent {
   final int movieId;
 
   const GetMovieCast(this.movieId);
-
-  @override
-  List<Object> get props => [movieId];
 }
 
 class GetSearchMovies extends MoviesEvent {
@@ -31,16 +21,10 @@ class GetSearchMovies extends MoviesEvent {
 
   const GetSearchMovies(
       this.query); // Constructor renombrado y variable inicializada
-
-  @override
-  List<Object> get props => [query];
 }
 
 class GetSuggestionsByQuery extends MoviesEvent {
   final String searchTerm;
 
   const GetSuggestionsByQuery(this.searchTerm);
-
-  @override
-  List<Object> get props => [searchTerm];
 }
